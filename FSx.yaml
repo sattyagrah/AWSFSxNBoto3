@@ -1,0 +1,269 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template for creating FSx NetApp ONTAP filesystem with EC2 instance'
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+    - Label:
+        default: Dynamic Parameters For Creating FSx NetApp ONTAP File System
+      Parameters:
+        - DeploymentType
+        - VpcId   
+        - PrimarySubnet     
+        - StandbySubnet
+        - FSxSecurityGroup
+        - EC2SecurityGroup
+        - KeyPairName
+        - EC2InstanceType
+        - ThroughputCapacityGen1
+        - ThroughputCapacitySingleAZ2
+        - ThroughputCapacityMultiAZ2
+        - FSxStorageCapacity
+        - SVMName
+        - FsxAdminPassword
+        - VolumeName
+        - VolumeSize
+        - JunctionPath
+        - OntapVolumeType
+        
+    ParameterLabels:
+      DeploymentType:
+        default: Deployment type
+      VpcId:
+        default: VPC Id
+      PrimarySubnet:
+        default: Preferred subnet
+      StandbySubnet:
+        default: Standby subnet (for Multi AZ)
+      FSxSecurityGroup:
+        default: Security group for FSx
+      EC2SecurityGroup:
+        default: Security group for EC2 instance
+      ThroughputCapacityGen1:
+        default: Throughput capacity for first generation file system
+      ThroughputCapacitySingleAZ2:
+        default: Throughput capacity for second generation file system (Single AZ)
+      ThroughputCapacityMultiAZ2:
+        default: Throughput capacity for second generation file system (Multi AZ)
+      FSxStorageCapacity:
+        default: SSD storage capacity
+      VolumeName:
+        default: Volume name
+      VolumeSize:
+        default: Volume size (MiB)
+      JunctionPath:
+        default: Junction path
+      FsxAdminPassword:
+        default: File system administrative password
+      SVMName:
+        default: Storage virtual machine name
+      KeyPairName:
+        default: Key pair for EC2 instance
+      EC2InstanceType:
+        default: EC2 instance type
+      OntapVolumeType:
+        default: Volume type
+
+Parameters:
+  DeploymentType:
+    Description: Select FSx NetApp ONTAP deployment type.
+    Type: String
+    AllowedValues:
+      - 'SINGLE_AZ_1'
+      - 'SINGLE_AZ_2'
+      - 'MULTI_AZ_1'
+      - 'MULTI_AZ_2'
+    Default: 'MULTI_AZ_2'
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC where FSx and EC2 will be deployed.
+
+  PrimarySubnet:
+    Type: AWS::EC2::Subnet::Id
+    Description: Specify the preferred subnet for your file system.
+
+  StandbySubnet:
+    Type: AWS::EC2::Subnet::Id
+    Description: Specify the standby subnet for your file system (required for Multi-AZ).
+
+  FSxSecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: "Specify VPC Security Groups to associate with your file system’s network interfaces."
+
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: "Specify VPC Security Groups to associate with your EC2 instance’s network interface."
+
+  KeyPairName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Specify key-pair name for EC2 instance.
+
+  EC2InstanceType:
+    Type: String
+    Default: t3.medium
+    AllowedValues:
+      - t3.micro
+      - t3.small
+      - t3.medium
+      - t3.large
+    Description: Specify EC2 instance type.
+
+  ThroughputCapacityGen1:
+    Type: Number
+    Description: The sustained speed at which the file server hosting your file system can serve data. The file server can also burst to higher speeds for periods of time. (SINGLE_AZ_1 and MULTI_AZ_1).
+    AllowedValues: [128, 256, 512, 1024, 2048, 4096]
+    Default: 128
+
+  ThroughputCapacitySingleAZ2:
+    Type: Number
+    Description: Throughput capacity for SINGLE_AZ_2.
+    AllowedValues: [384, 768, 1536, 3072, 6144]
+    Default: 384
+
+  ThroughputCapacityMultiAZ2:
+    Type: Number
+    Description: Throughput capacity for MULTI_AZ_2.
+    AllowedValues: [384, 768, 1536, 3072, 6144]
+    Default: 384
+
+  FSxStorageCapacity:
+    Type: Number
+    Default: 2048
+    MinValue: 1024
+    Description: FSx ONTAP storage capacity in GiB.
+
+  SVMName:
+    Type: String
+    Default: fsxsvm
+    Description: Name for the Storage Virtual Machine.
+
+  FsxAdminPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Description: Password for this file system's “fsxadmin“ user, which you can use to access the ONTAP CLI or REST API.
+
+  VolumeName:
+    Type: String
+    Default: data
+    Description: Specify volume name (Maximum of 203 alphanumeric characters, plus _).
+  
+  OntapVolumeType:
+    Type: String
+    Default: RW
+    AllowedValues: [RW, DP]
+    Description: Select whether you're creating a Read-Write (RW) volume or a read-only Data Protection (DP) volume, which is used with SnapMirror.
+
+  VolumeSize:
+    Type: Number
+    Default: 1048576
+    MinValue: 1048576
+    Description: Specify size of volume in MiB (Minimum 20 MiB; Maximum 314,572,800 MiB).
+
+  JunctionPath:
+    Type: String
+    Default: '/data'
+    Description: The location within your file system where your volume will be mounted.
+
+Conditions:
+  IsMultiAZ: !Or
+    - !Equals [!Ref DeploymentType, 'MULTI_AZ_1']
+    - !Equals [!Ref DeploymentType, 'MULTI_AZ_2']
+  IsSecondGen: !Or
+    - !Equals [!Ref DeploymentType, 'SINGLE_AZ_2']
+    - !Equals [!Ref DeploymentType, 'MULTI_AZ_2']
+  IsFirstGen: !Or
+    - !Equals [!Ref DeploymentType, 'SINGLE_AZ_1']
+    - !Equals [!Ref DeploymentType, 'MULTI_AZ_1']
+  IsSingleAZ2: !Equals [!Ref DeploymentType, 'SINGLE_AZ_2']
+  IsMultiAZ2: !Equals [!Ref DeploymentType, 'MULTI_AZ_2']
+
+Resources:
+  FSxFileSystem:
+    Type: AWS::FSx::FileSystem
+    Properties:
+      FileSystemType: ONTAP
+      StorageCapacity: !Ref FSxStorageCapacity
+      SecurityGroupIds: 
+        - !Ref FSxSecurityGroup
+      SubnetIds: !If 
+        - IsMultiAZ
+        - - !Ref PrimarySubnet
+          - !Ref StandbySubnet
+        - - !Ref PrimarySubnet
+      OntapConfiguration:
+        DeploymentType: !Ref DeploymentType
+        FsxAdminPassword: !Ref FsxAdminPassword
+        ThroughputCapacity: !If
+          - IsFirstGen
+          - !Ref ThroughputCapacityGen1
+          - !If
+            - IsSingleAZ2
+            - !Ref ThroughputCapacitySingleAZ2
+            - !If
+              - IsMultiAZ2
+              - !Ref ThroughputCapacityMultiAZ2
+              - !Ref ThroughputCapacityGen1
+        PreferredSubnetId: !Ref PrimarySubnet
+        AutomaticBackupRetentionDays: 0
+      Tags:
+        - Key: Name
+          Value: !Sub FSx-ONTAP-${AWS::StackName}-${AWS::Region}
+
+  StorageVirtualMachine:
+    Type: AWS::FSx::StorageVirtualMachine
+    Properties:
+      FileSystemId: !Ref FSxFileSystem
+      Name: !Sub ${SVMName}-${AWS::StackName}
+      RootVolumeSecurityStyle: UNIX
+    DependsOn:
+      - 'FSxFileSystem'
+
+  Volume:
+    Type: AWS::FSx::Volume
+    Properties:
+      Name: !Sub  ${VolumeName}_${AWS::StackName}
+      OntapConfiguration:
+        JunctionPath: !Ref JunctionPath
+        SecurityStyle: UNIX
+        SizeInMegabytes: !Ref VolumeSize
+        StorageEfficiencyEnabled: true
+        StorageVirtualMachineId: !Ref StorageVirtualMachine
+        TieringPolicy:
+          Name: ALL
+      VolumeType: ONTAP
+    DependsOn:
+      - 'StorageVirtualMachine'
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Sub '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.12-x86_64}}'
+      InstanceType: !Ref EC2InstanceType
+      KeyName: !Ref KeyPairName
+      SubnetId: !Ref PrimarySubnet
+      SecurityGroupIds: 
+        - !Ref EC2SecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub FSx-ONTAP-Client-${AWS::StackName}-${AWS::Region}
+    DependsOn:
+      - 'Volume'
+
+Outputs:
+  FSxFileSystemId:
+    Description: FSx for NetApp ONTAP File System ID
+    Value: !Ref FSxFileSystem
+
+  StorageVirtualMachineId:
+    Description: Storage Virtual Machine ID
+    Value: !Ref StorageVirtualMachine
+
+  VolumeId:
+    Description: Volume ID
+    Value: !Ref Volume
+
+  EC2InstanceId:
+    Description: EC2 Instance ID
+    Value: !Ref EC2Instance
