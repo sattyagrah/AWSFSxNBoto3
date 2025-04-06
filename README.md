@@ -32,3 +32,41 @@
     > ```sh
     > python3 FSxN.py
     > ```
+
+### Sample output:
+
+- The script will ask for few input such as `Deployment type`, `Snapmirror` and `Snapmirror type`. Please answer it as per your choice...
+    > ```md
+    > # python3 FSxN.py
+    > 
+    > Deployment type:
+    > Options: MULTI_AZ_1, SINGLE_AZ_1, SINGLE_AZ_2, MULTI_AZ_2
+    > enter your choice:MULTI_AZ_1
+    > 
+    > Snapmirror:
+    > Options: yes, no
+    > enter your choice:yes
+    > 
+    > Snapmirror type:
+    > Options: src, dest
+    > enter your choice:dest
+    > Creating FSx file system: dest
+    > File system creation initiated: fs-00e8cc2ad8f5e2c53
+    > Waiting for file system fs-00e8cc2ad8f5e2c53 to become available...
+    > File system fs-00e8cc2ad8f5e2c53 is now available.
+    > Creating SVM: svm_dest
+    > SVM creation initiated: svm-06e9029f71894372c
+    > Waiting for svm-06e9029f71894372c to become available...
+    > SVM svm-06e9029f71894372c is now active
+    > Creating data volume data_dest...
+    > Volume creation initiated: fsvol-03d2780328d243f94
+    > Waiting for volume fsvol-03d2780328d243f94 to become available...
+    > Volume fsvol-03d2780328d243f94 is now available
+    > Creating EC2 instance...
+    > EC2 Instance launched: i-06e23c81318dd6964
+    > All resource created successfully!
+    > File System ID: fs-00e8cc2ad8f5e2c53
+    > SVM ID: svm-06e9029f71894372c
+    > Volume ID: fsvol-03d2780328d243f94
+    > EC2 instance ID: i-06e23c81318dd6964
+    > ```
