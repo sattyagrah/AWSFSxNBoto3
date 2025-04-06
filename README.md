@@ -1,4 +1,4 @@
-## Python code to create FSxN ONTAP file system along with SVM and data volume in AWS cloud. 
+## Create FSxN ONTAP file system along with SVM and data volume in AWS cloud. 
 
 > [!NOTE]
 > 
@@ -16,7 +16,7 @@
 >
 > 4. This script is using 2 subnets of the default VPC of the selected region. 
 
-### How to use:
+### How to use (python):
 
 - Download the script:
 
@@ -70,3 +70,14 @@
     > Volume ID: fsvol-03d2780328d243f94
     > EC2 instance ID: i-06e23c81318dd6964
     > ```
+
+### How to use (yaml):
+
+1. Download the template to your local machine from GitHub repository.
+
+    > ```bash
+    > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSx.yaml -o FSx.yaml
+    > ```
+
+2. Use the template to [create the stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html) through AWS console. 
+
