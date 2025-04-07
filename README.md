@@ -14,7 +14,9 @@
 >
 > 3. This script is using custom security group for FSx and EC2 resources, please modify if as per your use case in the line [132](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L132C54-L132C57), [147](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L147C54-L147C57) and [262](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L262C50-L262C64).
 >
-> 4. This script is using 2 subnets of the default VPC of the selected region. 
+> 4. Change the key-pair name, as per your use case in the line [258](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L258).
+> 
+> 5. This script is using 2 subnets of the default VPC of the selected region. 
 
 ### How to use (python):
 
