@@ -111,7 +111,7 @@ subnet_ids = get_subnets(get_default_vpc())
 svm_name = 'svm'
 volume_size = 1024 # Volume size in GiB
 volume_name = 'data'
-admin_password = 'asdf4321'
+admin_password = 'asdf4321' # change it as per your use case
 instance_type = 't3.medium'
 image_id = get_ami(f"/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.12-x86_64")
 deployment_type, snapmirror, snapmirror_type = get_fsx_inputs()
@@ -129,7 +129,7 @@ def create_file_system():
             FileSystemType = 'ONTAP',
             StorageCapacity = storage_capacity,
             SubnetIds = subnet_ids[:1],
-            SecurityGroupIds = [get_security_group(f"FSx")],
+            SecurityGroupIds = [get_security_group(f"FSx")], # Change security group "FSx" as per your use case
             OntapConfiguration={
                 'AutomaticBackupRetentionDays' : 0,
                 'DeploymentType' : deployment_type,
@@ -144,7 +144,7 @@ def create_file_system():
             FileSystemType = 'ONTAP',
             StorageCapacity = storage_capacity,
             SubnetIds = subnet_ids[:2],
-            SecurityGroupIds = [get_security_group(f"FSx")],
+            SecurityGroupIds = [get_security_group(f"FSx")], # Change security group "FSx" as per your use case
             OntapConfiguration={
                 'AutomaticBackupRetentionDays' : 0,
                 'DeploymentType' : deployment_type,
@@ -255,11 +255,11 @@ def create_ec2():
     response = ec2_client.run_instances(
         ImageId = image_id,
         InstanceType = instance_type,
-        KeyName = region,
+        KeyName = region, # change key-pair "ap-southeast-2" as per your use case
         SubnetId = subnet_ids[0],
         MaxCount = 1,
         MinCount = 1,
-        SecurityGroupIds = [get_security_group(f"SGFor-{region}")],
+        SecurityGroupIds = [get_security_group(f"SGFor-{region}")], #  # Change security group "SGFor-ap-southeast-2" as per your use case
         TagSpecifications = [{
             'ResourceType': 'instance',
             'Tags':[{'Key': 'Name', 'Value': f"{snapmirror_type}" if snapmirror == 'yes' else f"{deployment_type}_client_{region}"}]
