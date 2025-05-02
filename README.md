@@ -8,40 +8,36 @@
 
 ### FSxN:
 
+> [!IMPORTANT] 
+>
+> 1. By default, this script will create resources in the AWS region `ap-southeast-2`.
+> 
+> 2. Please set the **region** variable in the script as per your use case after downloading this script.
+>
+> 3. This script is using custom security group for FSx and EC2 resources, please modify if as per your use case in the line [132](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L132C54-L132C57), [147](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L147C54-L147C57) and [262](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L262C50-L262C64).
+>
+> 4. Change the key-pair name, as per your use case in the line [258](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L258).
+> 
+> 5. This script is using 2 subnets of the default VPC of the selected region.
+
 - How to use:
 
-    > [!IMPORTANT] 
-    >
-    > 1. By default, this script will create resources in the AWS region `ap-southeast-2`.
-    > 
-    > 2. Please set the **region** variable in the script as per your use case after downloading this script.
-    >
-    > 3. This script is using custom security group for FSx and EC2 resources, please modify if as per your use case in the line [132](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L132C54-L132C57), [147](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L147C54-L147C57) and [262](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L262C50-L262C64).
-    >
-    > 4. Change the key-pair name, as per your use case in the line [258](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L258).
-    > 
-    > 5. This script is using 2 subnets of the default VPC of the selected region.
-
-- Download the script:
+  - Download the script:
 
     > ```bash
     > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSxN.py -o FSxN.py
     > ```
 
-- Make modifications, if required as mentioned above. 
+  - Make modifications, if required as mentioned above. 
 
-- Create FSxN ONTAP resources using the below command: 
+  - Create FSxN ONTAP resources using the below command: 
 
     > ```python
     > python3 FSxN.py
     > ```
 
 - Example:
-
-    > [!NOTE]
-    > 
-    > - The script will ask for few input such as `Deployment type`, `Snapmirror` and `Snapmirror type`. Please answer it as per your choice...
-    ---
+    
     > ```python
     > ❯ python3 FSxN.py
     > 
@@ -91,27 +87,26 @@
 
 ### FSxN-CLI:
 
+> [!IMPORTANT] 
+>
+> 1. By default, this script will create resources in the AWS region `ap-southeast-2`.
+> 
+> 2. Use the `-h` or `--help` flag to get all the options. 
+>
+> 3. This script will create a log file `FSxN-CLI.log` in the same directory, while this script will be downloaded.
+>
+>
+> 5. This script considers that a key-pair with name, same a region (E.g: us-east-1) is already present in your account.
+
 - How to use: 
 
-    > [!IMPORTANT] 
-    >
-    > 1. By default, this script will create resources in the AWS region `ap-southeast-2`.
-    > 
-    > 2. Use the `-h` or `--help` flag to get all the options. 
-    >
-    > 3. This script will create a log file `FSxN-CLI.log` in the same directory, while this script will be downloaded.
-    >
-    > 4. **Security group** and **Key pair** is required. Pass the security group name as per your use (default: default). 
-    >
-    > 5. This script considers that a key-pair with name, same a region (E.g: us-east-1) is already present in your account.
-
-- Download the script:
+  - Download the script:
 
     > ```bash
     > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSxN-CLI.py -o FSxN-CLI.py
     > ```
 
-- Create FSxN ONTAP resources using the below command: 
+  - Create FSxN ONTAP resources using the below command: 
 
     > ```python
     > python3 FSxN-CLI.py -k <key_pair> -sg <security_group_name>
@@ -122,7 +117,7 @@
         > python3 FSxN-CLI.py -k demo-key -sg demo-sg
         > ```
 
-- Example: 
+  - Example: 
 
     > ```python
     > ❯ python3 FSxN-CLI.py -h
