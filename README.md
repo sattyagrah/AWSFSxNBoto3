@@ -25,7 +25,7 @@
   - Download the script:
 
     > ```bash
-    > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSxN.py -o FSxN.py
+    > ❯ curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSxN.py -o FSxN.py
     > ```
 
   - Make modifications, if required as mentioned above. 
@@ -33,7 +33,7 @@
   - Create FSxN ONTAP resources using the below command: 
 
     > ```python
-    > python3 FSxN.py
+    > ❯ python3 FSxN.py
     > ```
 
 - Example:
@@ -80,7 +80,7 @@
   - Download the template to your local machine from GitHub repository.
 
     > ```bash
-    > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSx.yaml -o FSx.yaml
+    > ❯ curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSx.yaml -o FSx.yaml
     > ```
 
   -  Use the template to [create the stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html) through AWS console. 
@@ -103,18 +103,18 @@
   - Download the script:
 
     > ```bash
-    > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSxN-CLI.py -o FSxN-CLI.py
+    > ❯ curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSxN-CLI.py -o FSxN-CLI.py
     > ```
 
   - Create FSxN ONTAP resources using the below command: 
 
     > ```python
-    > python3 FSxN-CLI.py -k <key_pair> -sg <security_group_name>
+    > ❯ python3 FSxN-CLI.py -k <key_pair> -sg <security_group_name>
     > ```
 
     - Example: 
         > ```python
-        > python3 FSxN-CLI.py -k demo-key -sg demo-sg
+        > ❯ python3 FSxN-CLI.py -k demo-key -sg demo-sg
         > ```
 
   - Example: 
