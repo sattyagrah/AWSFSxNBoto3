@@ -6,23 +6,25 @@
 > 
 > - Please install **python** and **pip** in your local machine before using this python file. 
 
-### How to use (python):
+### FSxN:
 
-> [!IMPORTANT] 
->
-> 1. By default, this script will create resources in the AWS region `ap-southeast-2`.
-> 
-> 2. Please set the **region** variable in the script as per your use case after downloading this script.
->
-> 3. This script is using custom security group for FSx and EC2 resources, please modify if as per your use case in the line [132](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L132C54-L132C57), [147](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L147C54-L147C57) and [262](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L262C50-L262C64).
->
-> 4. Change the key-pair name, as per your use case in the line [258](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L258).
-> 
-> 5. This script is using 2 subnets of the default VPC of the selected region.
+- How to use:
+
+    > [!IMPORTANT] 
+    >
+    > 1. By default, this script will create resources in the AWS region `ap-southeast-2`.
+    > 
+    > 2. Please set the **region** variable in the script as per your use case after downloading this script.
+    >
+    > 3. This script is using custom security group for FSx and EC2 resources, please modify if as per your use case in the line [132](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L132C54-L132C57), [147](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L147C54-L147C57) and [262](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L262C50-L262C64).
+    >
+    > 4. Change the key-pair name, as per your use case in the line [258](https://github.com/sattyagrah/AWSFSxNBoto3/blob/main/FSxN.py#L258).
+    > 
+    > 5. This script is using 2 subnets of the default VPC of the selected region.
 
 - Download the script:
 
-    > ```sh
+    > ```bash
     > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSxN.py -o FSxN.py
     > ```
 
@@ -30,15 +32,18 @@
 
 - Create FSxN ONTAP resources using the below command: 
 
-    > ```sh
+    > ```python
     > python3 FSxN.py
     > ```
 
-### Sample output:
+- Example:
 
-- The script will ask for few input such as `Deployment type`, `Snapmirror` and `Snapmirror type`. Please answer it as per your choice...
-    > ```md
-    > # python3 FSxN.py
+    > [!NOTE]
+    > 
+    > - The script will ask for few input such as `Deployment type`, `Snapmirror` and `Snapmirror type`. Please answer it as per your choice...
+    ---
+    > ```python
+    > ❯ python3 FSxN.py
     > 
     > Deployment type:
     > Options: MULTI_AZ_1, SINGLE_AZ_1, SINGLE_AZ_2, MULTI_AZ_2
@@ -72,33 +77,37 @@
     > EC2 instance ID: i-06e23c81318dd6964
     > ```
 
-### How to use (yaml):
+### FSx:
 
-1. Download the template to your local machine from GitHub repository.
+- How to use: 
+  
+  - Download the template to your local machine from GitHub repository.
 
     > ```bash
     > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSx.yaml -o FSx.yaml
     > ```
 
-2. Use the template to [create the stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html) through AWS console. 
+  -  Use the template to [create the stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html) through AWS console. 
 
-### How to use (FSxN-CLI):
+### FSxN-CLI:
 
-> [!IMPORTANT] 
->
-> 1. By default, this script will create resources in the AWS region `ap-southeast-2`.
-> 
-> 2. Use the `-h` or `--help` flag to get all the options. 
->
-> 3. This script will create a log file `FSxN-CLI.log` in the same directory, while this script will be downloaded.
->
-> 4. **Security group** and **Key pair** is required. Pass the security group name as per your use (default: default). 
->
-> 5. This script considers that a key-pair with name, same a region (E.g: us-east-1) is already present in your account.
+- How to use: 
+
+    > [!IMPORTANT] 
+    >
+    > 1. By default, this script will create resources in the AWS region `ap-southeast-2`.
+    > 
+    > 2. Use the `-h` or `--help` flag to get all the options. 
+    >
+    > 3. This script will create a log file `FSxN-CLI.log` in the same directory, while this script will be downloaded.
+    >
+    > 4. **Security group** and **Key pair** is required. Pass the security group name as per your use (default: default). 
+    >
+    > 5. This script considers that a key-pair with name, same a region (E.g: us-east-1) is already present in your account.
 
 - Download the script:
 
-    > ```sh
+    > ```bash
     > curl https://raw.githubusercontent.com/sattyagrah/AWSFSxNBoto3/refs/heads/main/FSxN-CLI.py -o FSxN-CLI.py
     > ```
 
