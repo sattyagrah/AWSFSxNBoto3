@@ -186,6 +186,7 @@ def get_security_group(sg_name):
     )
     
     if not response['SecurityGroups']:
+        logging.error(f"No security group found with name: {sg_name}")
         raise Exception(f"No security group found with name: {sg_name}") 
     
     security_group = response['SecurityGroups'][0]['GroupId']
@@ -201,7 +202,7 @@ def get_default_vpc():
     )
 
     if not response['Vpcs']:
-        print(f"No default VPC found in this region")
+        logging.error(f"No default VPC found in this region")
         return None
     
     default_vpc = response['Vpcs'][0]['VpcId']
@@ -214,6 +215,7 @@ def get_subnets(vpc_id):
     )
 
     if not response['Subnets']:
+        logging.error(f"No subnets found in the VPC: {vpc_id}")
         raise Exception(f"No subnets found in the VPC: {vpc_id}")
     
     subnets = []
@@ -235,7 +237,7 @@ def create_file_system():
             FileSystemType = 'ONTAP',
             StorageCapacity = storage_capacity,
             SubnetIds = subnet_ids[:1],
-            SecurityGroupIds = [get_security_group(security_group)], # [get_security_group(f"FSx")] SG needs to be changed as per your use case.
+            SecurityGroupIds = [get_security_group(security_group)], # SG needs to be changed as per your use case.
             OntapConfiguration={
                 'AutomaticBackupRetentionDays' : 0,
                 'DeploymentType' : deployment_type,
@@ -249,7 +251,7 @@ def create_file_system():
             FileSystemType = 'ONTAP',
             StorageCapacity = storage_capacity,
             SubnetIds = subnet_ids[:2],
-            SecurityGroupIds = [get_security_group(security_group)], #[get_security_group(f"FSx")] SG needs to be changed as per your use case.
+            SecurityGroupIds = [get_security_group(security_group)], # SG needs to be changed as per your use case.
             OntapConfiguration={
                 'AutomaticBackupRetentionDays' : 0,
                 'DeploymentType' : deployment_type,
@@ -365,7 +367,7 @@ def create_ec2():
         SubnetId = subnet_ids[0],
         MaxCount = 1,
         MinCount = 1,
-        SecurityGroupIds = [get_security_group(security_group)], # [get_security_group(f"SGFor-{region}")], SG needs to be changed as per your use case.
+        SecurityGroupIds = [get_security_group(security_group)], # SG needs to be changed as per your use case.
         TagSpecifications = [{
             'ResourceType': 'instance',
             'Tags':[{'Key': 'Name', 'Value': f"{snapmirror_type}" if snapmirror == 'yes' else f"{deployment_type}_client_{region}"}]
@@ -383,6 +385,7 @@ def main():
     # Initialize clients with region from args
     global region
     region = args.region
+
     global fsx_client, ec2_client, ssm_client
     fsx_client = boto3.client('fsx', region_name=region)
     ec2_client = boto3.client('ec2', region_name=region)
